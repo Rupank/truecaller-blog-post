@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
+import config from '../config';
 import '../App.css'
 export class CategoryList extends Component {
 
@@ -22,7 +23,7 @@ export class CategoryList extends Component {
         this.setState({
             isLoading: true
         }, async () => {
-            let requestURL = 'https://public-api.wordpress.com/rest/v1/sites/107403796/categories/';
+            let requestURL = `${config.baseURL}/${config.siteID}/${config.catURL}/`;
             try {
 
                 let res = await fetch(requestURL);

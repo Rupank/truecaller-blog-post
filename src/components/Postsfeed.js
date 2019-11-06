@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import '../App.css';
 import Post from './Post';
 import { withRouter } from 'react-router-dom';
+import config from '../config';
 class Postsfeed extends Component {
 
     constructor(props) {
@@ -20,9 +21,9 @@ class Postsfeed extends Component {
     getRequestURL = (dataSource, id) => {
         let requestURL;
         if (dataSource && dataSource !== "post") {
-            requestURL = `https://public-api.wordpress.com/rest/v1.1/sites/107403796/posts/?number=25&order_by=date&${dataSource}=${id}`
+            requestURL = `${config.baseURL}/${config.siteID}/${config.postsURL}&${dataSource}=${id}`
         } else {
-            requestURL = `https://public-api.wordpress.com/rest/v1.1/sites/107403796/posts/?number=25&order_by=date`
+            requestURL = `${config.baseURL}/${config.siteID}/${config.postsURL}`
         }
         return requestURL;
     }
@@ -52,7 +53,7 @@ class Postsfeed extends Component {
         let diffID = (this.props.match.params.id !== prevProps.match.params.id);
         let diffDataSource = (this.props.match.params.dataSource !== prevProps.match.params.dataSource);
         if (diffID || diffDataSource) {
-            window.document.title = `${this.props.location.state.name} Archives - Truecaller Blog`
+            window.document.title = (this.props.location.state && this.props.location.state.name) ? `${this.props.location.state.name} Archives - Truecaller Blog` : 'Truecaller Blog'
             this.fetchPosts(this.props.match.params.dataSource, this.props.match.params.id);
         }
     }
@@ -73,7 +74,7 @@ class Postsfeed extends Component {
                     ))
                 }
                 {
-                    isLoading && <div>Loading Content...</div>
+                    isLoading && <div>Loading Posts...</div>
                 }
                 {error && <div style={{ color: 'red' }}>{error}</div>}
             </div >

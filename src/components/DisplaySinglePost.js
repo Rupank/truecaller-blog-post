@@ -1,18 +1,19 @@
 import React from 'react'
 import Post from './Post';
+// import config from '../config';
 
-function showRelatedPosts(post) {
+// function showRelatedPosts(post) {
 
-    let url = 'https://public-api.wordpress.com/rest/v1.1/sites/107403796/posts/6978/related';
-    fetch(url, {
-        method: 'OPTIONS',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }).then(data => {
-    })
+//     let url = `${config.baseURL}/${config.siteID}/posts/6978/related`;
+//     fetch(url, {
+//         method: 'OPTIONS',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         }
+//     }).then(data => {
+//     })
 
-}
+// }
 
 function DisplaySinglePost(props) {
     const post = props.location.state.post;

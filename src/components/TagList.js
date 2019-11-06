@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
+import config from '../config';
 import '../App.css'
 export class TagList extends Component {
     constructor(props) {
@@ -19,7 +20,7 @@ export class TagList extends Component {
         this.setState({
             isLoading: true
         }, async () => {
-            let requestURL = 'https://public-api.wordpress.com/rest/v1/sites/107403796/tags/?order_by=count&order=DESC&number=10';
+            let requestURL = `${config.baseURL}/${config.siteID}/${config.tagsURL}`;
             try {
 
                 let res = await fetch(requestURL);

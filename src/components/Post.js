@@ -69,7 +69,20 @@ function Post(props) {
     const showContent = props.showContent;
     window.scrollTo(0, 0);
     return (
-        <div>
+        <div className="posts-feed">
+            {
+                showContent ? post.post_thumbnail && <img src={`${post.post_thumbnail.URL}?resize=672%2C372&ssl=1`} alt=""
+                    style={{ width: '672px', height: '372px' }} /> :
+                    post.post_thumbnail &&
+                    <Link to={{
+                        pathname: `/post/${post.ID}`,
+                        state: { post }
+                    }}>
+                        <img src={`${post.post_thumbnail.URL}?resize=672%2C372&ssl=1`} alt="" className="post-thumbnail-img"
+                            style={{ width: '672px', height: '372px' }}
+                        />
+                    </Link>
+            }
             <h2 className="post-title">
                 {
                     showContent ? post.title : <Link to={{
@@ -80,20 +93,11 @@ function Post(props) {
                     </Link>
                 }
             </h2>
-            {
-                showContent ? post.post_thumbnail && <img src={`${post.post_thumbnail.URL}?resize=672%2C372&ssl=1`} alt=""
-                    style={{ width: '672px', height: '372px' }} /> :
-                    post.post_thumbnail &&
-                    <Link to={{
-                        pathname: `/post/${post.ID}`,
-                        state: { post }
-                    }}>
-                        <img src={`${post.post_thumbnail.URL}?resize=672%2C372&ssl=1`} alt="" className="post-thumbnail-img"
-                            style={{ width: '672px', height: '372px' }} />
-                    </Link>
-            }
+
             <div>
-                <div>{ReactHtmlParser(post.excerpt)}</div>
+                {
+                    !showContent && <div>{ReactHtmlParser(post.excerpt)}</div>
+                }
                 <span>{getTimeDiff(post.date)}</span>
             </div>
             {showContent && <div>{ReactHtmlParser(post.content)}</div>}
