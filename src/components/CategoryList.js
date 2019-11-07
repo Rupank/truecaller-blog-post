@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import config from '../config';
-import '../App.css'
+import axios from 'axios';
+import './../styles/App.css'
 export class CategoryList extends Component {
 
     constructor(props) {
@@ -19,19 +20,20 @@ export class CategoryList extends Component {
         this.fetchCategories();
     }
 
+    /**
+     * Sets the state based on api response from request url and does error handling if needed
+     */
     fetchCategories = async () => {
         this.setState({
             isLoading: true
         }, async () => {
             let requestURL = `${config.baseURL}/${config.siteID}/${config.catURL}/`;
             try {
-
-                let res = await fetch(requestURL);
-                res = await res.json();
+                const { data } = await axios.get(requestURL, { timeout: 5000 })
                 this.setState({
                     isLoading: false,
                     error: '',
-                    categories: res.categories
+                    categories: data.categories
                 })
             } catch (error) {
                 this.setState({
@@ -61,12 +63,8 @@ export class CategoryList extends Component {
                         </li>
                     ))
                 }
-                {
-                    isLoading && <div>Loading Categories...</div>
-                }
-                {
-                    error && <div>{error}</div>
-                }
+                {isLoading && <div>Loading Categories...</div>}
+                {error && <div className="error">{error}</div>}
             </div >
         )
     }

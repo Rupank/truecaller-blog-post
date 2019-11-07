@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import '../App.css';
+import './../styles/App.css'
 import Post from './Post';
 import { withRouter } from 'react-router-dom';
 import config from '../config';
+import axios from 'axios';
 class Postsfeed extends Component {
 
     constructor(props) {
@@ -11,7 +12,8 @@ class Postsfeed extends Component {
             posts: [],
             pageCount: 1,
             error: '',
-            isLoading: false
+            isLoading: false,
+            completed: false
         }
     }
 
@@ -19,6 +21,9 @@ class Postsfeed extends Component {
         this.fetchPosts();
     }
 
+    /**
+     * This method returns the proper request url required to get the post based on filters 
+     */
     getRequestURL = () => {
         const dataSource = this.props.match.params.dataSource;
         const id = this.props.match.params.id;
@@ -30,19 +35,25 @@ class Postsfeed extends Component {
         }
         return requestURL;
     }
+
+    /**
+     * Saves the fetched data from url into state and does error handling
+     */
     fetchPosts = () => {
 
         this.setState({
             isLoading: true
         }, async () => {
             try {
-                let data = await fetch(this.getRequestURL());
-                data = await data.json();
-                console.log(this.state.posts);
+                const { data } = await axios.get(this.getRequestURL(), { timeout: 5000 });
                 this.setState({
                     pageCount: this.state.pageCount + 1,
                     posts: [...this.state.posts, ...data.posts],
-                    isLoading: false
+                    isLoading: false,
+                }, () => {
+                    this.setState({
+                        completed: (data.found <= this.state.posts.length)
+                    })
                 })
             } catch (error) {
                 this.setState({
@@ -54,23 +65,33 @@ class Postsfeed extends Component {
         })
     }
 
+    /**
+     * Used this lifecycle hook to check difference in props and get the latest posts data via appropriate request call
+     * @param {*} prevProps 
+     */
     componentDidUpdate(prevProps) {
         let diffID = (this.props.match.params.id !== prevProps.match.params.id);
         let diffDataSource = (this.props.match.params.dataSource !== prevProps.match.params.dataSource);
+
         if (diffID || diffDataSource) {
+
             this.setState({ pageCount: 1, posts: [] }, () => {
+                window.scrollTo(0, 0);
                 window.document.title = (this.props.location.state && this.props.location.state.name) ? `${this.props.location.state.name} Archives - Truecaller Blog` : 'Truecaller Blog'
                 this.fetchPosts();
             });
         }
     }
 
+    /**
+     * Function to display older posts
+     */
     loadPreviousPosts = () => {
         this.fetchPosts();
     }
 
     render() {
-        const { posts, error, isLoading } = this.state;
+        const { posts, error, isLoading, completed } = this.state;
         return (
             <div className="content">
                 {
@@ -85,12 +106,14 @@ class Postsfeed extends Component {
                 {
                     isLoading && <div>Loading Posts...</div>
                 }
-                {error && <div style={{ color: 'red' }}>{error}</div>}
+                {error && <div className="error">{error}</div>}
                 {
-                    !isLoading && <button className="prev-posts-btn" onClick={this.loadPreviousPosts}>OLDER POSTS</button>
+                    !completed && !error && !isLoading && <button className="prev-posts-btn" onClick={this.loadPreviousPosts}>OLDER POSTS</button>
                 }
             </div >
         )
     }
 }
+
+// Used this withRouter hook to pass down route history in props
 export default withRouter(Postsfeed)

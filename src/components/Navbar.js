@@ -1,7 +1,11 @@
 import React from 'react'
 import CategoryList from './CategoryList';
 import TagList from './TagList';
-import '../App.css'
+import './../styles/App.css'
+
+/**
+ * This is a component which displays both the right sidebars - Categories and Popular Tags
+ */
 function Navbar() {
     return (
         <div className="sidebar-parent">

@@ -3,7 +3,7 @@ import Postsfeed from './Postsfeed'
 import Navbar from './Navbar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import DisplaySinglePost from './DisplaySinglePost';
-import '../App.css'
+import './../styles/App.css'
 
 class HomePage extends Component {
     render() {

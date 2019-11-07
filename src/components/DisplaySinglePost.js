@@ -1,5 +1,6 @@
 import React from 'react'
 import Post from './Post';
+import './../styles/App.css'
 
 function DisplaySinglePost(props) {
     const post = props.location.state.post;

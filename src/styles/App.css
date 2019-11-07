@@ -3,6 +3,7 @@ body {
   font-family: sans-serif;
   line-height: 1.5;
   text-align: left;
+  margin: 0;
 }
 a {
   text-decoration: none;
@@ -124,6 +125,11 @@ li {
 
 .post-title a:hover {
   color: #0b6ba6;
+}
+
+.error {
+  color: red;
+  text-transform: capitalize;
 }
 
 @media screen and (min-width: 150px) and (max-width: 600px) {

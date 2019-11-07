@@ -1,17 +1,23 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import '../App.css'
+import './../styles/App.css'
 
-function getTimeDiff(previous) {
-    previous = new Date(previous).getTime();
+
+/**
+ * returns elapsed time since current time and the passed prevTime argument
+ * Returns a string in format : 3 seconds ago, 2 months ago, 1 year ago
+ * @param {*} prevTime 
+ */
+function getTimeDiff(prevTime) {
+    prevTime = new Date(prevTime).getTime();
     let current = new Date().getTime();
-    var msPerMinute = 60 * 1000;
-    var msPerHour = msPerMinute * 60;
-    var msPerDay = msPerHour * 24;
-    var msPerMonth = msPerDay * 30;
-    var msPerYear = msPerDay * 365;
+    let msPerMinute = 60 * 1000;
+    let msPerHour = msPerMinute * 60;
+    let msPerDay = msPerHour * 24;
+    let msPerMonth = msPerDay * 30;
+    let msPerYear = msPerDay * 365;
 
-    var elapsed = current - previous;
+    let elapsed = current - prevTime;
     let time = 0;
     if (elapsed < msPerMinute) {
         time = Math.round(elapsed / 1000);

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import config from '../config';
-import '../App.css'
+import './../styles/App.css'
+import axios from 'axios';
 export class TagList extends Component {
     constructor(props) {
         super(props)
@@ -22,13 +23,11 @@ export class TagList extends Component {
         }, async () => {
             let requestURL = `${config.baseURL}/${config.siteID}/${config.tagsURL}`;
             try {
-
-                let res = await fetch(requestURL);
-                res = await res.json();
+                const { data } = await axios.get(requestURL, { timeout: 5000 });
                 this.setState({
                     isLoading: false,
                     error: '',
-                    tags: res.tags
+                    tags: data.tags
                 })
             } catch (error) {
                 this.setState({
@@ -58,12 +57,8 @@ export class TagList extends Component {
                         </li>
                     ))
                 }
-                {
-                    isLoading && <div>Loading tags...</div>
-                }
-                {
-                    error && <div>{error}</div>
-                }
+                {isLoading && <div>Loading tags...</div>}
+                {error && <div className="error">{error}</div>}
             </div >
         )
     }
