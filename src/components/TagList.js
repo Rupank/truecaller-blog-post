@@ -46,7 +46,7 @@ export class TagList extends Component {
             <div>
                 {
                     tags.map(tag => (
-                        <li key={tag.ID} className="tag-list">
+                        <li key={tag.ID}>
                             <Link to={{
                                 pathname: `/tag/${tag.slug}`,
                                 state: {

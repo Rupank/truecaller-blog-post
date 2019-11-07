@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactHtmlParser from 'react-html-parser';
 import { Link } from 'react-router-dom';
 import '../App.css'
 
@@ -67,42 +66,50 @@ function getTimeDiff(previous) {
 function Post(props) {
     const post = props.post;
     const showContent = props.showContent;
-    window.scrollTo(0, 0);
+    if (showContent) {
+        window.scrollTo(0, 0);
+    }
     return (
-        <div className="posts-feed">
-            {
-                showContent ? post.post_thumbnail && <img src={`${post.post_thumbnail.URL}?resize=672%2C372&ssl=1`} alt=""
-                    style={{ width: '672px', height: '372px' }} /> :
-                    post.post_thumbnail &&
+        < article className="topcontent " >
+            <header>
+                {
+                    showContent ? post.post_thumbnail && <img src={`${post.post_thumbnail.URL}?resize=672%2C372&ssl=1`} alt="" className="post-thumbnail-img" /> :
+                        post.post_thumbnail &&
+                        <Link to={{
+                            pathname: `/post/${post.ID}`,
+                            state: { post }
+                        }}>
+                            <img src={`${post.post_thumbnail.URL}?resize=672%2C372&ssl=1`} alt="" className="post-thumbnail-img  post-img" />
+                        </Link>
+                }
+
+                <h2 className="post-title">
+                    {
+                        showContent ? post.title : <Link to={{
+                            pathname: `/post/${post.ID}`,
+                            state: { post }
+                        }}>
+                            {post.title}
+                        </Link>
+                    }
+                </h2>
+            </header>
+            <footer className="post-time">
+                {getTimeDiff(post.date)}
+            </footer>
+            <content className="post-content">
+                {!showContent &&
+                    <div dangerouslySetInnerHTML={{ __html: post.excerpt }} />}
+                {!showContent && <span className="continue-reading">
                     <Link to={{
                         pathname: `/post/${post.ID}`,
                         state: { post }
-                    }}>
-                        <img src={`${post.post_thumbnail.URL}?resize=672%2C372&ssl=1`} alt="" className="post-thumbnail-img"
-                            style={{ width: '672px', height: '372px' }}
-                        />
-                    </Link>
-            }
-            <h2 className="post-title">
-                {
-                    showContent ? post.title : <Link to={{
-                        pathname: `/post/${post.ID}`,
-                        state: { post }
-                    }}>
-                        {post.title}
-                    </Link>
+                    }}> Continue Reading → </Link>
+                </span>
                 }
-            </h2>
-
-            <div>
-                {
-                    !showContent && <div>{ReactHtmlParser(post.excerpt)}</div>
-                }
-                <span>{getTimeDiff(post.date)}</span>
-            </div>
-            {showContent && <div>{ReactHtmlParser(post.content)}</div>}
-            <br />
-        </div>
+                {showContent && <div dangerouslySetInnerHTML={{ __html: post.content }} />}
+            </content>
+        </ article >
     )
 }
 

@@ -49,7 +49,7 @@ export class CategoryList extends Component {
             <div>
                 {
                     categories.map(category => (
-                        <li key={category.ID} className='cat-list'>
+                        <li key={category.ID}>
                             <Link to={{
                                 pathname: `/category/${category.slug}`,
                                 state: {

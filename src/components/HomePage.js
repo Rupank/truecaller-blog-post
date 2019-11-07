@@ -8,18 +8,13 @@ import '../App.css'
 class HomePage extends Component {
     render() {
         return (
-            <div className="container-main">
+            <div className="container">
                 <Router>
-                    <header className="site-header">
-                        <div className="header-main">
-                            <div className="site-logo"> </div>
-                        </div>
+                    <header className="mainHeader">
+                        <img src="https://truecaller.blog/wp-content/uploads/2017/03/cropped-blog-header.png" alt="logo" />
                     </header>
-                    <div>
-                        <img src="https://truecaller.blog/wp-content/uploads/2017/03/cropped-blog-header.png" alt="Truecaller-blog"
-                            style={{ width: '100%', height: '240px' }} />
-                    </div>
-                    <div className="container">
+
+                    <div className="mainContent">
                         <Switch>
                             <Route exact path="/" component={Postsfeed} />
                             <Route exact path="/post/:id" component={DisplaySinglePost} />
